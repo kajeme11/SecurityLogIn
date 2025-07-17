@@ -25,6 +25,8 @@ public class SecurityConfig {
                 request
                         //Don't Authenticate public end points
                         .requestMatchers("/public/**").permitAll()
+                        //Authenticated or not deny access
+                        .requestMatchers("/admin/**").denyAll()
                         //authenticate all incoming requests
                         .anyRequest().authenticated());
         //Form base
