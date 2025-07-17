@@ -1,0 +1,7 @@
+Request -> Filters
+                ->Authentication Filter -> AuthenticationManager -> Authentication Provider
+                                                                                            -> Password Encoder
+                                                                       -> User Details Service
+SET UP SECURITY CONFIG FILE
+-Create a SecurityFilterChain Bean to authenticate some end points
+and make other end points accessible without need to authenticate
