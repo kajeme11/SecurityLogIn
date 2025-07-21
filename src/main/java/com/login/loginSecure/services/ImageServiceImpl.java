@@ -3,9 +3,11 @@ package com.login.loginSecure.services;
 import com.login.loginSecure.model.Image;
 import com.login.loginSecure.repositories.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ImageServiceImpl implements ImageService{
 
     @Autowired
@@ -37,7 +39,7 @@ public class ImageServiceImpl implements ImageService{
 
     @Override
     public List<Image> getImagesForUser(String username) {
-        List<Image> images = imageRepository.findByOwnerUsername(username);
+        List<Image> images = imageRepository.findByUsername(username);
         return images;
     }
 }
