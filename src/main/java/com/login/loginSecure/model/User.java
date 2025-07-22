@@ -9,8 +9,12 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Data
@@ -60,4 +64,34 @@ public class User {
     @ToString.Exclude
     private Role role;
 
+    @CreationTimestamp
+    @Column(updatable = false)
+    private LocalDateTime createdDate;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedDate;
+
+    public User(String username, String email, String password){
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
+
+    public User(String username, String email){
+        this.username = username;
+        this.email = email;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(this == o) return true;
+        if(!(o instanceof User)) return false;
+        User u = (User) o;
+        return this.userId != null && this.userId.equals(u.userId) && this.email.equals(u.email);
+    }
+
+    @Override
+    public int hashCode(){
+        return Objects.hash(userId, email);
+    }
 }
