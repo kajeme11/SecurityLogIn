@@ -36,4 +36,27 @@ public class Role {
         this.roleName = roleName;
     }
 
+    public Integer getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
+    }
+
+    public AppRole getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(AppRole roleName) {
+        this.roleName = roleName;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
 }
