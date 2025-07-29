@@ -1,4 +1,4 @@
-package com.login.loginSecure.services.users;
+package com.login.loginSecure.security.services;
 
 import com.login.loginSecure.model.User;
 import com.login.loginSecure.repositories.UserRepository;

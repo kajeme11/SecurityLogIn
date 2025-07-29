@@ -1,4 +1,4 @@
-package com.login.loginSecure.services.users;
+package com.login.loginSecure.security.services;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.login.loginSecure.model.User;
@@ -21,12 +21,9 @@ public class UserDetailsImpl implements UserDetails {
     private Long id;
     private String username;
     private String email;
-
     @JsonIgnore
     private String password;
-
     private boolean is2faEnabled;
-
     private Collection<? extends GrantedAuthority> authorities;
 
     public UserDetailsImpl(Long id, String username, String email, String password,

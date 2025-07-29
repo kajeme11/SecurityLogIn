@@ -54,6 +54,7 @@ public class SecurityConfig {
 
      */
 
+    /*
     @Bean
     public UserDetailsService userDetailsService(DataSource dataSource){
 //        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
@@ -77,5 +78,5 @@ public class SecurityConfig {
         }
         return manager;
     }
-
+*/
 }

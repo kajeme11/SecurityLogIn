@@ -5,3 +5,57 @@ Request -> Filters
 SET UP SECURITY CONFIG FILE
 -Create a SecurityFilterChain Bean to authenticate some end points
 and make other end points accessible without need to authenticate
+
+HTTP ENDPOINTS
+HTTP    ENDPOINT             REQUEST BODY   REQUEST PARAMETER           RESPONSE
+POST    /api/images          image          @AuthenticationPrincipal    Image (created image)
+GET     /api/images          None           @AuthenticationPrincipal    List<Images>
+PUT     /api/images/{imgId}  image          @AuthenticationPrincipal    Image(updated image)
+Delete  /api/images/{imgId}  None           @AuthenticationPrincipal    void
+
+
+
+@AuthenticationPrincipal - is a Spring Security annotation
+Injects the current authenticated user to the controller
+It is automatically injected in the controller parameter
+auto populated in UserDetails object
+UserDetails - is a built in class from Spring Security
+
+Authentication Providers are components that handle
+the verification of credentials provided by users
+-Create an Authentication token
+
+Default Authentication provider -> DaoAuthenticationProvider
+DaoAuthenticationProvider implements authenticate method from extended class
+
+InMemoryAuthenticationProvider - authenticates users by using in memory credentials and not a DB
+stores and manages user credentials within application's memory, ok for small apps
+AuthenticationProvider -> UserDetailsService -> Memory, not DB
+-InMemoryAuthenticationProvider is used for developing and testing
+-for limited users, prototypes
+
+
+AuthenticationProvider interface - authenticates user
+Method authenticate returns an Authentication object
+
+UserDetails interface is a core component in spring security
+that represents a user in the application
+-It provides necessary information about the user sch as
+username, password, and authorities
+
+Create a costume implementation of UserDetails to require specigic details
+for authentication.
+In this project UserDetailsImpl implements UserDetails representing User
+
+UserDetailsServiceImpl - Tell Spring how to load UserDetails
+Loads User from UserRepository,
+then converts it into our costume UserDetailsImpl
+
+The costume UserDetailsImpl adds more attributes for a user then the default ones
+The costume UserDetailsServiceImpl tells spring what repository to use
+to find the details from the User that I want to use
+
+Without these 2 classes Spring will not be able to authorize
+or authenticate costume User implementations
+
+
