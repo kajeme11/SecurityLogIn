@@ -58,4 +58,14 @@ to find the details from the User that I want to use
 Without these 2 classes Spring will not be able to authorize
 or authenticate costume User implementations
 
+Role based authorization is a method on restricting access
+on users on what they allowed to do
+Example:
+Customer - Permission to access personal account
+Teller - Access to customer information
+Admin - Full systems access, user and role management
 
+In-Built classes for Authorization
+GrantedAuthority (interface) -> SimpleGrantedAuthority (class)
+When assigning a role to a User, GrantedAuthority is
+used to assign a role tp that user
