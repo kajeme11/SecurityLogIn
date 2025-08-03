@@ -26,7 +26,7 @@ public class AdminController {
     public ResponseEntity<String> updateUser(@RequestParam Long id,
                                              @RequestParam String roleName){
         userService.updateUserRole(id, roleName);
-        return ResponseEntity.ok(userService.getUserById(id));
+        return ResponseEntity.ok("User Role Updated!");
     }
 
     @GetMapping("/userid/{id}")

@@ -60,45 +60,45 @@ public class SecurityConfig {
         Create users for
 
      */
-    @Bean
-    public CommandLineRunner initData(RoleRepository roleRepository,
-                                      UserRepository userRepository) {
-        return args -> {
-            Role userRole = roleRepository.findByRoleName(AppRole.ROLE_USER)
-                    .orElseGet(() -> roleRepository.save(new Role(AppRole.ROLE_USER)));
-
-            Role adminRole = roleRepository.findByRoleName(AppRole.ROLE_ADMIN)
-                    .orElseGet(() -> roleRepository.save(new Role(AppRole.ROLE_ADMIN)));
-
-            if (!userRepository.existsByUsername("user1")) {
-                User user1 = new User("user1", "user1@example.com", "{noop}password1");
-                user1.setAccountNonLocked(false);
-                user1.setAccountNotExpired(true);
-                user1.setCredentialsNonExpired(true);
-                user1.setEnabled(true);
-                user1.setCredentialsExpiryDate(LocalDate.now().plusYears(1));
-                user1.setAccountExpiryDate(LocalDate.now().plusYears(1));
-                user1.setTwoFactorEnabled(false);
-                user1.setSignUpMethod("email");
-                user1.setRole(userRole);
-                userRepository.save(user1);
-            }
-
-            if (!userRepository.existsByUsername("admin")) {
-                User admin = new User("admin", "admin@example.com", "{noop}adminPass");
-                admin.setAccountNonLocked(true);
-                admin.setAccountNotExpired(true);
-                admin.setCredentialsNonExpired(true);
-                admin.setEnabled(true);
-                admin.setCredentialsExpiryDate(LocalDate.now().plusYears(1));
-                admin.setAccountExpiryDate(LocalDate.now().plusYears(1));
-                admin.setTwoFactorEnabled(false);
-                admin.setSignUpMethod("email");
-                admin.setRole(adminRole);
-                userRepository.save(admin);
-            }
-        };
-    }
+//    @Bean
+//    public CommandLineRunner initData(RoleRepository roleRepository,
+//                                      UserRepository userRepository) {
+//        return args -> {
+//            Role userRole = roleRepository.findByRoleName(AppRole.ROLE_USER)
+//                    .orElseGet(() -> roleRepository.save(new Role(AppRole.ROLE_USER)));
+//
+//            Role adminRole = roleRepository.findByRoleName(AppRole.ROLE_ADMIN)
+//                    .orElseGet(() -> roleRepository.save(new Role(AppRole.ROLE_ADMIN)));
+//
+//            if (!userRepository.existsByUsername("user1")) {
+//                User user1 = new User("user1", "user1@example.com", "{noop}password1");
+//                user1.setAccountNonLocked(false);
+//                user1.setAccountNotExpired(true);
+//                user1.setCredentialsNonExpired(true);
+//                user1.setEnabled(true);
+//                user1.setCredentialsExpiryDate(LocalDate.now().plusYears(1));
+//                user1.setAccountExpiryDate(LocalDate.now().plusYears(1));
+//                user1.setTwoFactorEnabled(false);
+//                user1.setSignUpMethod("email");
+//                user1.setRole(userRole);
+//                userRepository.save(user1);
+//            }
+//
+//            if (!userRepository.existsByUsername("admin")) {
+//                User admin = new User("admin", "admin@example.com", "{noop}adminPass");
+//                admin.setAccountNonLocked(true);
+//                admin.setAccountNotExpired(true);
+//                admin.setCredentialsNonExpired(true);
+//                admin.setEnabled(true);
+//                admin.setCredentialsExpiryDate(LocalDate.now().plusYears(1));
+//                admin.setAccountExpiryDate(LocalDate.now().plusYears(1));
+//                admin.setTwoFactorEnabled(false);
+//                admin.setSignUpMethod("email");
+//                admin.setRole(adminRole);
+//                userRepository.save(admin);
+//            }
+//        };
+//    }
 
     /*
         InMemoryAuthentication for developing testing app
