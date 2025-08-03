@@ -1,5 +1,6 @@
 package com.login.loginSecure.services;
 
+import com.login.loginSecure.dto.UserDTO;
 import com.login.loginSecure.model.AppRole;
 import com.login.loginSecure.model.Role;
 import com.login.loginSecure.model.User;
@@ -29,11 +30,32 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public List<User> getAllUsers() {
-        return List.of();
+        return userRepository.findAll();
     }
 
     @Override
     public UserDTO getUserById(Long id) {
-        return null;
+        User user = userRepository.findById(id).orElseThrow();
+        return convertDTO(user);
+    }
+
+    public UserDTO convertDTO(User user){
+        return new UserDTO(
+                user.getUserId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.isAccountNonLocked(),
+                user.isAccountNotExpired(),
+                user.isCredentialsNonExpired(),
+                user.isEnabled(),
+                user.getCredentialsExpiryDate(),
+                user.getAccountExpiryDate(),
+                user.getTwoFactorSecrete(),
+                user.isTwoFactorEnabled(),
+                user.getSignUpMethod(),
+                user.getRole(),
+                user.getCreatedDate(),
+                user.getUpdatedDate()
+        );
     }
 }
