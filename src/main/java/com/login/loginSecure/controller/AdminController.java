@@ -29,7 +29,7 @@ public class AdminController {
         return ResponseEntity.ok("User Role Updated!");
     }
 
-    @GetMapping("/userid/{id}")
+    @GetMapping("/user/{id}")
     public ResponseEntity<UserDTO> getUser(@PathVariable Long id){
         return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
     }
