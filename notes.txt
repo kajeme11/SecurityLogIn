@@ -73,10 +73,16 @@ used to assign a role tp that user
 METHOD LEVEL SECURITY
 *To use Method Level Security, we must enable it in our configuration
 by adding the annotation @EnableMethodSecurity at class level
+
+@EnableWebSecurity
+@EnableMethodSecurity(prePostEnabled = true, //allows pre & post annotations
+        securedEnabled = true,        //enables secure annotation
+        jsr250Enabled = true)         //enables roles allowed annotation
+
 -@PreAuthorize("hasRole('ADMIN') or hasRole('USER')"), used at method level in service classes
 -@Secured({"ROLE_USER", "ROLE_ADMIN"})
 -@RolesAllowed({"ROLE_USER", "ROLE_ADMIN"})
 -@PostAuthorize,  evaluates authorization after evaluating method
 -@PreFilter and @PostFilter
 
-
+HTTP Status 403, FORBIDDEN is returned if unauthorized to access
