@@ -15,6 +15,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
@@ -32,6 +34,12 @@ import static org.springframework.security.config.Customizer.withDefaults;
         jsr250Enabled = true)         //enables roles allowed annotation
 public class SecurityConfig {
 
+
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+
     /*
         Replaces the DefaultSecurityFilterChain if implemented
 
@@ -44,7 +52,7 @@ public class SecurityConfig {
                 request
                         //Don't Authenticate public end points
                         .requestMatchers("/public/**").permitAll()
-                        .requestMatchers("/api/**").permitAll()
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         //Authenticated or not deny access
                         .requestMatchers("/admin/**").denyAll()
                         //authenticate all incoming requests
@@ -64,45 +72,50 @@ public class SecurityConfig {
         Create users for
 
      */
-//    @Bean
-//    public CommandLineRunner initData(RoleRepository roleRepository,
-//                                      UserRepository userRepository) {
-//        return args -> {
-//            Role userRole = roleRepository.findByRoleName(AppRole.ROLE_USER)
-//                    .orElseGet(() -> roleRepository.save(new Role(AppRole.ROLE_USER)));
-//
-//            Role adminRole = roleRepository.findByRoleName(AppRole.ROLE_ADMIN)
-//                    .orElseGet(() -> roleRepository.save(new Role(AppRole.ROLE_ADMIN)));
-//
-//            if (!userRepository.existsByUsername("user1")) {
-//                User user1 = new User("user1", "user1@example.com", "{noop}password1");
-//                user1.setAccountNonLocked(false);
-//                user1.setAccountNotExpired(true);
-//                user1.setCredentialsNonExpired(true);
-//                user1.setEnabled(true);
-//                user1.setCredentialsExpiryDate(LocalDate.now().plusYears(1));
-//                user1.setAccountExpiryDate(LocalDate.now().plusYears(1));
-//                user1.setTwoFactorEnabled(false);
-//                user1.setSignUpMethod("email");
-//                user1.setRole(userRole);
-//                userRepository.save(user1);
-//            }
-//
-//            if (!userRepository.existsByUsername("admin")) {
-//                User admin = new User("admin", "admin@example.com", "{noop}adminPass");
-//                admin.setAccountNonLocked(true);
-//                admin.setAccountNotExpired(true);
-//                admin.setCredentialsNonExpired(true);
-//                admin.setEnabled(true);
-//                admin.setCredentialsExpiryDate(LocalDate.now().plusYears(1));
-//                admin.setAccountExpiryDate(LocalDate.now().plusYears(1));
-//                admin.setTwoFactorEnabled(false);
-//                admin.setSignUpMethod("email");
-//                admin.setRole(adminRole);
-//                userRepository.save(admin);
-//            }
-//        };
-//    }
+    @Bean
+    public CommandLineRunner initData(RoleRepository roleRepository,
+                                      UserRepository userRepository,
+                                      PasswordEncoder passwordEncoder) {
+        return args -> {
+            Role userRole = roleRepository.findByRoleName(AppRole.ROLE_USER)
+                    .orElseGet(() -> roleRepository.save(new Role(AppRole.ROLE_USER)));
+
+            Role adminRole = roleRepository.findByRoleName(AppRole.ROLE_ADMIN)
+                    .orElseGet(() -> roleRepository.save(new Role(AppRole.ROLE_ADMIN)));
+
+            if (!userRepository.existsByUsername("user1")) {
+                User user1 = new User("user1",
+                        "user1@example.com",
+                        passwordEncoder.encode("password1"));
+                user1.setAccountNonLocked(false);
+                user1.setAccountNotExpired(true);
+                user1.setCredentialsNonExpired(true);
+                user1.setEnabled(true);
+                user1.setCredentialsExpiryDate(LocalDate.now().plusYears(1));
+                user1.setAccountExpiryDate(LocalDate.now().plusYears(1));
+                user1.setTwoFactorEnabled(false);
+                user1.setSignUpMethod("email");
+                user1.setRole(userRole);
+                userRepository.save(user1);
+            }
+
+            if (!userRepository.existsByUsername("admin")) {
+                User admin = new User("admin",
+                        "admin@example.com",
+                        passwordEncoder.encode("adminPass"));
+                admin.setAccountNonLocked(true);
+                admin.setAccountNotExpired(true);
+                admin.setCredentialsNonExpired(true);
+                admin.setEnabled(true);
+                admin.setCredentialsExpiryDate(LocalDate.now().plusYears(1));
+                admin.setAccountExpiryDate(LocalDate.now().plusYears(1));
+                admin.setTwoFactorEnabled(false);
+                admin.setSignUpMethod("email");
+                admin.setRole(adminRole);
+                userRepository.save(admin);
+            }
+        };
+    }
 
     /*
         InMemoryAuthentication for developing testing app

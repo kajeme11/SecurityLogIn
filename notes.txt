@@ -74,10 +74,16 @@ METHOD LEVEL SECURITY
 *To use Method Level Security, we must enable it in our configuration
 by adding the annotation @EnableMethodSecurity at class level
 
+@Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true, //allows pre & post annotations
         securedEnabled = true,        //enables secure annotation
         jsr250Enabled = true)         //enables roles allowed annotation
+public class SecurityConfig { ...}
+
+@RequestMapping("/api/admin")
+@PreAuthorize("hasRole('ROLE_ADMIN')")
+public class AdminController { ... }
 
 -@PreAuthorize("hasRole('ADMIN') or hasRole('USER')"), used at method level in service classes
 -@Secured({"ROLE_USER", "ROLE_ADMIN"})
@@ -86,3 +92,46 @@ by adding the annotation @EnableMethodSecurity at class level
 -@PreFilter and @PostFilter
 
 HTTP Status 403, FORBIDDEN is returned if unauthorized to access
+
+URL BASED RESTRICTIONS
+        http.authorizeHttpRequests(request ->
+                request
+                        //Don't Authenticate public end points
+                        .requestMatchers("/public/**").permitAll()
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
+PASSWORD ENCODING - process of transforming a password into a
+different format using an algorithm, non-human readable
+even if obtained, can't be used
+
+HASHING - Process where a string is sent over the network and gets converted
+into something completely different than the original string using an algorithm
+such as bcrypt
+bcrypt takes the password and a random string known as salt
+then it hashes/encrypts both strings together
+
+It is a one way process, can't convert it back to the original string
+The backend can convert it into the original message
+
+Spring Security offers PasswordEncoder to encode raw passwords
+and match encoded passwords with their raw ones
+Classes that implement the PasswordEncoder interface are:
+BCryptPasswordEncoder - recommended implementation
+NoOpPasswordEncoder - only for testing, not secured, not recommended
+PbkdfPasswordEncoder
+SCryptPasswordEncoder
+
+Spring Security Filters are java components that intercept
+http requests and responses
+
+Create customized Security Filters to implement
+specialized authentication such as
+token-based auth, customized headers, MFA
+Rate Limiting, prevent abuse of APUs
+IP Whitelisting or Blacklisting - restrict access to certain ip addresses
+Geo-Blocking - restrict access to certain locations
+
+FilterChainProxy holds the list of filters configured
+applies filters in the order that they were registered
+
+
